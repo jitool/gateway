@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ApiConfigMapper">
+    
+    <resultMap type="ApiConfig" id="ApiConfigResult">
+        <result property="id"    column="id"    />
+        <result property="serviceId"    column="service_id"    />
+        <result property="environment"    column="environment"    />
+        <result property="methodType"    column="method_type"    />
+        <result property="title"    column="title"    />
+        <result property="desc"    column="desc"    />
+        <result property="validateParams"    column="validate_params"    />
+        <result property="authType"    column="auth_type"    />
+        <result property="patternUrl"    column="pattern_url"    />
+        <result property="replenishRate"    column="replenish_rate"    />
+        <result property="burstCapacity"    column="burst_capacity"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="extra"    column="extra"    />
+    </resultMap>
+	
+	<sql id="selectApiConfigVo">
+        select id, service_id, environment, method_type, title, `desc`, validate_params, auth_type, pattern_url, replenish_rate, burst_capacity, state, create_time, update_time, extra from t_api_config
+    </sql>
+	
+    <select id="selectApiConfigList" parameterType="ApiConfig" resultMap="ApiConfigResult">
+        <include refid="selectApiConfigVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="serviceId != null  and serviceId != '' "> and service_id = #{serviceId}</if>
+             <if test="environment != null "> and environment = #{environment}</if>
+             <if test="methodType != null "> and method_type = #{methodType}</if>
+             <if test="title != null  and title != '' "> and title = #{title}</if>
+             <if test="desc != null  and desc != '' "> and `desc` = #{desc}</if>
+             <if test="validateParams != null  and validateParams != '' "> and validate_params = #{validateParams}</if>
+             <if test="authType != null "> and auth_type = #{authType}</if>
+             <if test="patternUrl != null  and patternUrl != '' "> and pattern_url = #{patternUrl}</if>
+             <if test="replenishRate != null "> and replenish_rate = #{replenishRate}</if>
+             <if test="burstCapacity != null "> and burst_capacity = #{burstCapacity}</if>
+             <if test="state != null "> and state = #{state}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="extra != null  and extra != '' "> and extra = #{extra}</if>
+         </where>
+    </select>
+    
+    <select id="selectApiConfigById" parameterType="Integer" resultMap="ApiConfigResult">
+        <include refid="selectApiConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertApiConfig" parameterType="ApiConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into t_api_config
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null  and serviceId != ''  ">service_id,</if>
+			<if test="environment != null  ">environment,</if>
+			<if test="methodType != null  ">method_type,</if>
+			<if test="title != null  and title != ''  ">title,</if>
+			<if test="desc != null  and desc != ''  ">`desc`,</if>
+			<if test="validateParams != null  and validateParams != ''  ">validate_params,</if>
+			<if test="authType != null  ">auth_type,</if>
+			<if test="patternUrl != null  and patternUrl != ''  ">pattern_url,</if>
+			<if test="replenishRate != null  ">replenish_rate,</if>
+			<if test="burstCapacity != null  ">burst_capacity,</if>
+			<if test="state != null  ">state,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="extra != null  and extra != ''  ">extra,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null  and serviceId != ''  ">#{serviceId},</if>
+			<if test="environment != null  ">#{environment},</if>
+			<if test="methodType != null  ">#{methodType},</if>
+			<if test="title != null  and title != ''  ">#{title},</if>
+			<if test="desc != null  and desc != ''  ">#{desc},</if>
+			<if test="validateParams != null  and validateParams != ''  ">#{validateParams},</if>
+			<if test="authType != null  ">#{authType},</if>
+			<if test="patternUrl != null  and patternUrl != ''  ">#{patternUrl},</if>
+			<if test="replenishRate != null  ">#{replenishRate},</if>
+			<if test="burstCapacity != null  ">#{burstCapacity},</if>
+			<if test="state != null  ">#{state},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="extra != null  and extra != ''  ">#{extra},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateApiConfig" parameterType="ApiConfig">
+        update t_api_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serviceId != null  and serviceId != ''  ">service_id = #{serviceId},</if>
+            <if test="environment != null  ">environment = #{environment},</if>
+            <if test="methodType != null  ">method_type = #{methodType},</if>
+            <if test="title != null  and title != ''  ">title = #{title},</if>
+            <if test="desc != null  and desc != ''  ">`desc` = #{desc},</if>
+            <if test="validateParams != null  and validateParams != ''  ">validate_params = #{validateParams},</if>
+            <if test="authType != null  ">auth_type = #{authType},</if>
+            <if test="patternUrl != null  and patternUrl != ''  ">pattern_url = #{patternUrl},</if>
+            <if test="replenishRate != null  ">replenish_rate = #{replenishRate},</if>
+            <if test="burstCapacity != null  ">burst_capacity = #{burstCapacity},</if>
+            <if test="state != null  ">state = #{state},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="extra != null  and extra != ''  ">extra = #{extra},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteApiConfigById" parameterType="Integer">
+        delete from t_api_config where id = #{id}
+    </delete>
+	
+    <delete id="deleteApiConfigByIds" parameterType="String">
+        delete from t_api_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
