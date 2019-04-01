@@ -1,0 +1,6 @@
+spring:
+  redis:
+    password: mgx**RedMaster
+    port: 6381
+    database: 0
+    host: 114.115.156.158
