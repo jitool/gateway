@@ -114,7 +114,10 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	            $.operate.save(prefix + "/edit", $('#form-apiConfig-edit').serialize());
+                var serialize = $('#form-apiConfig-edit').serializeArray();
+                var state = $("input[id='api-state']").is(':checked') == true ? 1 : 0;
+                serialize.push({"name": "state", "value": state});
+	            $.operate.save(prefix + "/edit", serialize);
 	        }
 	    }
 	</script>

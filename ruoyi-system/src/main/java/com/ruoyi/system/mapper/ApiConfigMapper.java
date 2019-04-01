@@ -58,5 +58,6 @@ public interface ApiConfigMapper
      * @return 结果
      */
 	public int deleteApiConfigByIds(String[] ids);
-	
+
+	List<ApiConfig> selectInIds(String[] ids);
 }
