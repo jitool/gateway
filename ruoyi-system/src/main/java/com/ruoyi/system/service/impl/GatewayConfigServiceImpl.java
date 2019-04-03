@@ -53,6 +53,7 @@ public class GatewayConfigServiceImpl implements IGatewayConfigService
 	@Override
 	public int insertGatewayConfig(GatewayConfig gatewayConfig)
 	{
+
 	    return gatewayConfigMapper.insertGatewayConfig(gatewayConfig);
 	}
 	

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.GatewayAttrConfigMapper">
+    
+    <resultMap type="GatewayAttrConfig" id="GatewayAttrConfigResult">
+        <result property="id"    column="id"    />
+        <result property="serviceId"    column="service_id"    />
+        <result property="type"    column="type"    />
+        <result property="attrName"    column="attr_name"    />
+        <result property="attrArgs"    column="attr_args"    />
+        <result property="desc"    column="desc"    />
+        <result property="sort"    column="sort"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+	
+	<sql id="selectGatewayAttrConfigVo">
+        select id, service_id, type, attr_name, attr_args, `desc`, sort, create_time, update_time, state from t_gateway_attr_config
+    </sql>
+	
+    <select id="selectGatewayAttrConfigList" parameterType="GatewayAttrConfig" resultMap="GatewayAttrConfigResult">
+        <include refid="selectGatewayAttrConfigVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="serviceId != null  and serviceId != '' "> and service_id = #{serviceId}</if>
+             <if test="type != null "> and type = #{type}</if>
+             <if test="attrName != null  and attrName != '' "> and attr_name = #{attrName}</if>
+             <if test="attrArgs != null  and attrArgs != '' "> and attr_args = #{attrArgs}</if>
+             <if test="desc != null  and desc != '' "> and `desc` = #{desc}</if>
+             <if test="sort != null "> and sort = #{sort}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="state != null "> and state = #{state}</if>
+         </where>
+    </select>
+    
+    <select id="selectGatewayAttrConfigById" parameterType="Integer" resultMap="GatewayAttrConfigResult">
+        <include refid="selectGatewayAttrConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGatewayAttrConfig" parameterType="GatewayAttrConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into t_gateway_attr_config
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null  and serviceId != ''  ">service_id,</if>
+			<if test="type != null  ">type,</if>
+			<if test="attrName != null  and attrName != ''  ">attr_name,</if>
+			<if test="attrArgs != null  and attrArgs != ''  ">attr_args,</if>
+			<if test="desc != null  and desc != ''  ">`desc`,</if>
+			<if test="sort != null  ">sort,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="state != null  ">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null  and serviceId != ''  ">#{serviceId},</if>
+			<if test="type != null  ">#{type},</if>
+			<if test="attrName != null  and attrName != ''  ">#{attrName},</if>
+			<if test="attrArgs != null  and attrArgs != ''  ">#{attrArgs},</if>
+			<if test="desc != null  and desc != ''  ">#{desc},</if>
+			<if test="sort != null  ">#{sort},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="state != null  ">#{state},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGatewayAttrConfig" parameterType="GatewayAttrConfig">
+        update t_gateway_attr_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serviceId != null  and serviceId != ''  ">service_id = #{serviceId},</if>
+            <if test="type != null  ">type = #{type},</if>
+            <if test="attrName != null  and attrName != ''  ">attr_name = #{attrName},</if>
+            <if test="attrArgs != null  and attrArgs != ''  ">attr_args = #{attrArgs},</if>
+            <if test="desc != null  and desc != ''  ">`desc` = #{desc},</if>
+            <if test="sort != null  ">sort = #{sort},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="state != null  ">state = #{state},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<update id="deleteGatewayAttrConfigById" parameterType="Integer">
+        UPDATE  t_gateway_attr_config SET state=0 where id = #{id}
+    </update>
+	
+    <update id="deleteGatewayAttrConfigByIds" parameterType="String">
+        UPDATE  t_gateway_attr_config SET state=0 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    
+</mapper>
