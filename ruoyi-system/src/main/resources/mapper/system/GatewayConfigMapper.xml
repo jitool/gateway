@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.GatewayConfigMapper">
+    
+    <resultMap type="GatewayConfig" id="GatewayConfigResult">
+        <result property="serviceId"    column="service_id"    />
+        <result property="url"    column="url"    />
+        <result property="suffixPath"    column="suffix_path"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+	
+	<sql id="selectGatewayConfigVo">
+        select service_id, url, suffix_path, create_time, update_time, state from t_gateway_config
+    </sql>
+	
+    <select id="selectGatewayConfigList" parameterType="GatewayConfig" resultMap="GatewayConfigResult">
+        <include refid="selectGatewayConfigVo"/>
+        <where>  
+            <if test="serviceId != null  and serviceId != '' "> and service_id = #{serviceId}</if>
+             <if test="url != null  and url != '' "> and url = #{url}</if>
+             <if test="suffixPath != null  and suffixPath != '' "> and suffix_path = #{suffixPath}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="state != null "> and state = #{state}</if>
+         </where>
+    </select>
+    
+    <select id="selectGatewayConfigById" parameterType="String" resultMap="GatewayConfigResult">
+        <include refid="selectGatewayConfigVo"/>
+        where service_id = #{serviceId}
+    </select>
+        
+    <insert id="insertGatewayConfig" parameterType="GatewayConfig">
+        insert into t_gateway_config
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null  and serviceId != ''  ">service_id,</if>
+			<if test="url != null  and url != ''  ">url,</if>
+			<if test="suffixPath != null  and suffixPath != ''  ">suffix_path,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="state != null  ">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null  and serviceId != ''  ">#{serviceId},</if>
+			<if test="url != null  and url != ''  ">#{url},</if>
+			<if test="suffixPath != null  and suffixPath != ''  ">#{suffixPath},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="state != null  ">#{state},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGatewayConfig" parameterType="GatewayConfig">
+        update t_gateway_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="url != null  and url != ''  ">url = #{url},</if>
+            <if test="suffixPath != null  and suffixPath != ''  ">suffix_path = #{suffixPath},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="state != null  ">state = #{state},</if>
+        </trim>
+        where service_id = #{serviceId}
+    </update>
+
+	<delete id="deleteGatewayConfigById" parameterType="String">
+        delete from t_gateway_config where service_id = #{serviceId}
+    </delete>
+	
+    <delete id="deleteGatewayConfigByIds" parameterType="String">
+        delete from t_gateway_config where service_id in 
+        <foreach item="serviceId" collection="array" open="(" separator="," close=")">
+            #{serviceId}
+        </foreach>
+    </delete>
+    
+</mapper>

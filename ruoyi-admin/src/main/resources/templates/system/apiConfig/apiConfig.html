@@ -12,11 +12,10 @@
 						<ul>
 							<li>
 								请求方法：
-								<div class="input-group" style="width: 100%">
-									<select name="method" class="form-control m-b" th:with="type=${@dict.getType('sys_apiconfig_method')}">
+								<select name="methodType" th:with="type=${@dict.getType('sys_apiconfig_method')}">
+										<option value="">所有</option>
 										<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-									</select>
-								</div>
+							    </select>
 							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -38,7 +37,7 @@
 					<i class="fa fa-remove"></i> 删除
 				</a>
 				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:apiConfig:export">
-						<i class="fa fa-download"></i> 导出
+					<i class="fa fa-download"></i> 导出
 				 </a>
 			</div>
 			<div class="col-sm-12 select-table table-striped">
@@ -120,6 +119,13 @@
 				{
 					field : 'authType', 
 					title : '权限配置',
+                    formatter: function(value, item, index) {
+                        if (item.authType === 0) {
+                            return '<span class="label label-danger">不需要</span>';
+                        } else{
+                            return '<span class="label label-primary">需要</span>';
+                        }
+                    }
 				},
 				{
 					field : 'patternUrl', 
@@ -135,7 +141,7 @@
 				},
 				{
 					field : 'state', 
-					title : '是否启用',
+					title : '状态',
                     formatter: function(value, item, index) {
                         if (item.state === 0) {
                             return '<span class="label label-danger">停用</span>';
