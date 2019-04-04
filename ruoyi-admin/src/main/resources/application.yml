@@ -121,3 +121,8 @@ xss:
   excludes: /system/notice/*
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+redis:
+  topic:
+    channel:
+      api-channel: api-config
+      route-channel: api-route
