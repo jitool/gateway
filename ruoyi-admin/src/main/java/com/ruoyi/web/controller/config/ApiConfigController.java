@@ -123,5 +123,30 @@ public class ApiConfigController extends BaseController
 	{		
 		return toAjax(apiConfigService.deleteApiConfigByIds(ids));
 	}
-	
+
+	/**
+	 * api状态修改
+	 */
+	@Log(title = "api配置", businessType = BusinessType.UPDATE)
+	@RequiresPermissions("system:apiConfig:edit")
+	@PostMapping("/changeState")
+	@ResponseBody
+	public AjaxResult changeState(ApiConfig apiConfig){
+		return toAjax(apiConfigService.changeState(apiConfig));
+	}
+	/**
+	 *
+	 * 功能描述:api全量刷新
+	 *
+	 * @param:
+	 * @return:
+	 * @auther: miaoguoxin
+	 * @date: 2019/4/4 0004 18:03
+	 */
+	@RequiresPermissions("system:apiConfig:refresh")
+	@GetMapping("/refresh")
+	@ResponseBody
+	public AjaxResult refresh(){
+		return toAjax(apiConfigService.refreshAllApiConfig());
+	}
 }

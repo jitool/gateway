@@ -24,7 +24,7 @@ public abstract class AbstractGatewayConfigService {
     protected  void sendRouteDelNontify(String[] idsArr){
         for (String serviceId : idsArr) {
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("type",TopicNotifyEventType.UPDATE.getValue());
+            jsonObject.put("type",TopicNotifyEventType.DEL.getValue());
             jsonObject.put("serviceId",serviceId);
             redisTemplate.convertAndSend(redisTopicChannelProperties.getRouteChannel(),jsonObject.toString());
         }
@@ -34,7 +34,7 @@ public abstract class AbstractGatewayConfigService {
     protected void sendRouteUpdateNotify(GatewayConfig gatewayConfig) {
         if (gatewayConfig!=null){
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("type",TopicNotifyEventType.DEL.getValue());
+            jsonObject.put("type",TopicNotifyEventType.UPDATE.getValue());
             jsonObject.put("gatewayConfig",gatewayConfig);
             redisTemplate.convertAndSend(redisTopicChannelProperties.getRouteChannel(),jsonObject.toString());
         }

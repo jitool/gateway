@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.config.RedisTopicChannelProperties;
+import com.ruoyi.common.enums.TopicNotifyEventType;
 import com.ruoyi.common.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -103,16 +104,29 @@ public class ApiConfigServiceImpl implements IApiConfigService {
             List<ApiConfig> apiConfigs = apiConfigMapper.selectInIds(Convert.toStrArray(ids));
             List<String> urls = apiConfigs.stream().map(ApiConfig::getPatternUrl).collect(Collectors.toList());
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("isDel",true);
+            jsonObject.put("type",TopicNotifyEventType.DEL.getValue());
             jsonObject.put("patternUrl", urls);
             redisTemplate.convertAndSend(redisTopicChannelProperties.getApiChannel(),jsonObject.toString());
         }
         return resultCode;
     }
 
+    @Override
+    public int refreshAllApiConfig() {
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("type",TopicNotifyEventType.REFRESH.getValue());
+        redisTemplate.convertAndSend(redisTopicChannelProperties.getApiChannel(),jsonObject.toString());
+        return 1;
+    }
+
+    @Override
+    public int changeState(ApiConfig apiConfig) {
+        return this.updateApiConfig(apiConfig);
+    }
+
     private void handleInsertOrUpdateSend(String patternUrl,ApiConfig apiConfig) {
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("isDel",false);
+        jsonObject.put("type", TopicNotifyEventType.UPDATE.getValue());
         jsonObject.put("patternUrl", Collections.singletonList(patternUrl));
         jsonObject.put("apiConfig",apiConfig);
         redisTemplate.convertAndSend(redisTopicChannelProperties.getApiChannel(),jsonObject.toString());

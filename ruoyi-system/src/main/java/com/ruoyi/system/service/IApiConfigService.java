@@ -50,5 +50,25 @@ public interface IApiConfigService
      * @return 结果
      */
 	public int deleteApiConfigByIds(String ids);
-	
+	/**
+	 *
+	 * 功能描述:刷新所有api配置
+	 *
+	 * @param:
+	 * @return:
+	 * @auther: miaoguoxin
+	 * @date: 2019/4/4 0004 17:52
+	 */
+	int refreshAllApiConfig();
+
+	/**
+	 *
+	 * 功能描述:api状态切换
+	 *
+	 * @param:
+	 * @return:
+	 * @auther: miaoguoxin
+	 * @date: 2019/4/4 0004 18:13
+	 */
+	int changeState(ApiConfig apiConfig);
 }
