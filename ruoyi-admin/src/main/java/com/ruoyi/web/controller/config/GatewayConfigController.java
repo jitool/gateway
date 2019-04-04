@@ -123,5 +123,20 @@ public class GatewayConfigController extends BaseController
 	{		
 		return toAjax(gatewayConfigService.deleteGatewayConfigByIds(ids));
 	}
-	
+
+	/**
+	 *
+	 * 功能描述:刷新网关路由配置
+	 *
+	 * @param:
+	 * @return:
+	 * @auther: miaoguoxin
+	 * @date: 2019/4/4 0004 17:28
+	 */
+	@RequiresPermissions("system:gatewayConfig:refresh")
+	@GetMapping("/refresh")
+	@ResponseBody
+	public AjaxResult refresh(){
+		return toAjax(gatewayConfigService.refreshRoute());
+	}
 }

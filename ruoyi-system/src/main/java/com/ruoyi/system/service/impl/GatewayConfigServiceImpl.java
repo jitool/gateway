@@ -85,4 +85,10 @@ public class GatewayConfigServiceImpl extends AbstractGatewayConfigService imple
         }
         return resultCode;
     }
+
+    @Override
+    public int refreshRoute() {
+        super.sendRefreshAllRouteNotify();
+        return 1;
+    }
 }

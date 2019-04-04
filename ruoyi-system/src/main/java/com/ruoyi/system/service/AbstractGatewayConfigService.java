@@ -1,8 +1,8 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.common.config.RedisTopicChannelProperties;
+import com.ruoyi.common.enums.TopicNotifyEventType;
 import com.ruoyi.common.json.JSONObject;
-import com.ruoyi.system.domain.GatewayAttrConfig;
 import com.ruoyi.system.domain.GatewayConfig;
 import com.ruoyi.system.mapper.GatewayConfigMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public abstract class AbstractGatewayConfigService {
     protected  void sendRouteDelNontify(String[] idsArr){
         for (String serviceId : idsArr) {
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("isDel",true);
+            jsonObject.put("type",TopicNotifyEventType.UPDATE.getValue());
             jsonObject.put("serviceId",serviceId);
             redisTemplate.convertAndSend(redisTopicChannelProperties.getRouteChannel(),jsonObject.toString());
         }
@@ -34,9 +34,15 @@ public abstract class AbstractGatewayConfigService {
     protected void sendRouteUpdateNotify(GatewayConfig gatewayConfig) {
         if (gatewayConfig!=null){
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("isDel",false);
+            jsonObject.put("type",TopicNotifyEventType.DEL.getValue());
             jsonObject.put("gatewayConfig",gatewayConfig);
             redisTemplate.convertAndSend(redisTopicChannelProperties.getRouteChannel(),jsonObject.toString());
         }
+    }
+    //刷新所有路由配置
+    protected void sendRefreshAllRouteNotify(){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("type", TopicNotifyEventType.REFRESH.getValue());
+        redisTemplate.convertAndSend(redisTopicChannelProperties.getRouteChannel(),jsonObject.toString());
     }
 }

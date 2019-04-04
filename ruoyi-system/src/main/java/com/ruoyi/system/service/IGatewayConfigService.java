@@ -50,5 +50,15 @@ public interface IGatewayConfigService
      * @return 结果
      */
 	public int deleteGatewayConfigByIds(String ids);
+	/**
+	 *
+	 * 功能描述:通知刷新节点路由配置
+	 *
+	 * @param:
+	 * @return:
+	 * @auther: miaoguoxin
+	 * @date: 2019/4/4 0004 17:17
+	 */
+	int refreshRoute();
 	
 }

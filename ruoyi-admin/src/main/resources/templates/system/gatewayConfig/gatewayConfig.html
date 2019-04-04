@@ -36,6 +36,9 @@
 				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:gatewayConfig:export">
 						<i class="fa fa-download"></i> 导出
 				 </a>
+                <a class="btn btn-info" onclick="refreshRoute()" shiro:hasPermission="system:gatewayConfig:refresh">
+                    <i class="fa fa-refresh"></i> 刷新路由
+                </a>
 			</div>
 			<div class="col-sm-12 select-table table-striped">
 				<table id="bootstrap-table" data-mobile-responsive="true"></table>
@@ -47,7 +50,13 @@
         var editFlag = [[${@permission.hasPermi('system:gatewayConfig:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:gatewayConfig:remove')}]];
         var prefix = ctx + "system/gatewayConfig";
-
+        //刷新路由
+        var refreshRoute=function(){
+            $.modal.confirm("确认要刷新路由吗?", function() {
+                var url = prefix+"/refresh";
+                $.operate.submit(url, "get", "json", "");
+            });
+        };
         $(function() {
             var options = {
                 url: prefix + "/list",
@@ -106,6 +115,8 @@
 		        }]
             };
             $.table.init(options);
+
+
         });
     </script>
 </body>
