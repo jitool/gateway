@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.config;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.GatewayConfig;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -110,6 +112,17 @@ public class GatewayAttrConfigController extends BaseController
 	public AjaxResult editSave(GatewayAttrConfig gatewayAttrConfig)
 	{		
 		return toAjax(gatewayAttrConfigService.updateGatewayAttrConfig(gatewayAttrConfig));
+	}
+
+	/**
+	 * route attr状态修改
+	 */
+	@Log(title = "api配置", businessType = BusinessType.UPDATE)
+	@RequiresPermissions("system:gatewayAttrConfig:edit")
+	@PostMapping("/changeState")
+	@ResponseBody
+	public AjaxResult changeState(GatewayAttrConfig gatewayAttrConfig){
+		return toAjax(gatewayAttrConfigService.changeState(gatewayAttrConfig));
 	}
 	
 	/**

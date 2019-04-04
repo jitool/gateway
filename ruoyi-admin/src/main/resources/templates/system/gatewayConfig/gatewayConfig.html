@@ -95,12 +95,8 @@
 				{
 					field : 'state', 
 					title : '状态',
-                    formatter: function(value, item, index) {
-                        if (item.state === 0) {
-                            return '<span class="label label-danger">停用</span>';
-                        } else{
-                            return '<span class="label label-primary">正常</span>';
-                        }
+                    formatter: function(value, row, index) {
+                        return statusTools(row);
                     }
 				},
 		        {
@@ -115,9 +111,29 @@
 		        }]
             };
             $.table.init(options);
-
-
         });
+        /*route状态启停*/
+        function statusTools(row) {
+            if (row.state == 0) {
+                return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.serviceId + '\')"></i> ';
+            } else {
+                return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.serviceId + '\')"></i> ';
+            }
+        }
+
+        /* route启用 */
+        function enable(id) {
+            $.modal.confirm("确认要启用该路由吗？", function() {
+                $.operate.post(prefix + "/changeState", { "serviceId": id, "state": 1 });
+            })
+        }
+
+        /* route停用 */
+        function disable(id) {
+            $.modal.confirm("确认要停用该路由吗？", function() {
+                $.operate.post(prefix + "/changeState", { "serviceId": id, "state": 0 });
+            })
+        }
     </script>
 </body>
 </html>

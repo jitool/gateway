@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.config;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.ApiConfig;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -122,6 +124,17 @@ public class GatewayConfigController extends BaseController
 	public AjaxResult remove(String ids)
 	{		
 		return toAjax(gatewayConfigService.deleteGatewayConfigByIds(ids));
+	}
+
+	/**
+	 * route状态修改
+	 */
+	@Log(title = "api配置", businessType = BusinessType.UPDATE)
+	@RequiresPermissions("system:gatewayConfig:edit")
+	@PostMapping("/changeState")
+	@ResponseBody
+	public AjaxResult changeState(GatewayConfig gatewayConfig){
+		return toAjax(gatewayConfigService.changeState(gatewayConfig));
 	}
 
 	/**

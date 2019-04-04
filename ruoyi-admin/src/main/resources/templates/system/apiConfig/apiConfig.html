@@ -55,7 +55,7 @@
         var prefix = ctx + "system/apiConfig";
         //刷新api
         var refreshApi=function(){
-            $.modal.confirm("确认要刷新路由吗?", function() {
+            $.modal.confirm("确认要刷新所有api吗?", function() {
                 var url = prefix+"/refresh";
                 $.operate.submit(url, "get", "json", "");
             });
