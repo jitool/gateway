@@ -21,9 +21,7 @@ import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -42,11 +40,12 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class DynamicRouteServiceImpl implements DynamicRouteService, ApplicationEventPublisherAware {
+public class DynamicRouteServiceImpl implements DynamicRouteService{
 
     @Resource
     private RouteDefinitionWriter routeDefinitionWriter;
-    private ApplicationEventPublisher publisher;
+    @Autowired
+    private ApplicationContext applicationContext;
     @Autowired
     private ApiConfigManager apiConfigManager;
     @Resource
@@ -57,12 +56,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService, Application
     private GatewayAttrConfigMapper gatewayAttrConfigMapper;
 
     private void notifyChanged() {
-        this.publisher.publishEvent(new RefreshRoutesEvent(this));
-    }
-
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
+        applicationContext.publishEvent(new RefreshRoutesEvent(this));
     }
 
     @Override
@@ -71,6 +65,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService, Application
         this.refreshAllRoute();
         //刷新内存的api配置
         this.refreshApi();
+        //通知刷新
         this.notifyChanged();
         log.info("路由资源加载完毕");
     }

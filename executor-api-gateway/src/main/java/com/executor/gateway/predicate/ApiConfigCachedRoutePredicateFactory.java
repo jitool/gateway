@@ -1,5 +1,6 @@
 package com.executor.gateway.predicate;
 
+import com.alibaba.fastjson.JSON;
 import com.executor.gateway.core.ApiConfigManager;
 import com.executor.gateway.model.bo.ApiConfigBo;
 import com.executor.gateway.model.po.ApiConfig;
@@ -44,6 +45,7 @@ public class ApiConfigCachedRoutePredicateFactory extends AbstractRoutePredicate
                 return false;
             }
             exchange.getAttributes().put(CACHE_API_OBJECT_KEY, api);
+            log.info("获取到api{}", JSON.toJSONString(api));
             return true;
         };
     }
