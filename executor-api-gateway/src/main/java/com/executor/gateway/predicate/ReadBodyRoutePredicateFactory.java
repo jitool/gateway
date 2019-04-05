@@ -1,5 +1,7 @@
 package com.executor.gateway.predicate;
 
+import com.executor.gateway.core.constant.GatewayConst;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.handler.AsyncPredicate;
@@ -9,6 +11,7 @@ import org.springframework.cloud.gateway.support.BodyInserterContext;
 import org.springframework.cloud.gateway.support.DefaultServerRequest;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -43,12 +46,18 @@ public class ReadBodyRoutePredicateFactory extends AbstractRoutePredicateFactory
 
     public AsyncPredicate<ServerWebExchange> applyAsync(Config config) {
         return exchange -> {
-            HttpHeaders headers = exchange.getRequest().getHeaders();
-            //必须设置contentType
+            ServerHttpRequest request = exchange.getRequest();
+            HttpHeaders headers = request.getHeaders();
+            String rawPath = request.getURI().getRawPath();
+            //swagger的直接跳过
+            if (rawPath.contains(GatewayConst.SWAGGER_API_DOC_URI)){
+                return Mono.just(Boolean.TRUE);
+            }
+            //兼容没有content-type的情况
             String contentTypeStr = headers.getFirst("Content-Type");
             if (contentTypeStr == null) {
-                log.warn("consider your Content-Type empty?");
-                return Mono.just(Boolean.FALSE);
+                log.warn("consider your Content-Type empty?---"+rawPath);
+                return Mono.just(Boolean.TRUE);
             }
             //文件上传直接跳过
             if (contentTypeStr.startsWith("multipart/form-data")) {
@@ -80,17 +89,11 @@ public class ReadBodyRoutePredicateFactory extends AbstractRoutePredicateFactory
         };
     }
 
-
+    @Data
     public static class Config {
-        private String className;
+        //需要跳过的uri
+        private String shouldSkipUri;
 
-        public String getClassName() {
-            return className;
-        }
-
-        public void setClassName(String className) {
-            this.className = className;
-        }
     }
 
 

@@ -21,9 +21,9 @@ public class ApiConfigBo implements Serializable {
     //权限配置,默认需要检查权限
     private int authType = AuthTypeEnum.AUTH.getValue();
     //并发量
-    private int replenishRate = 5;
+    private int replenishRate = 2;
     //容量
-    private int burstCapacity = 10;
+    private int burstCapacity = 5;
     //需要校验的字段名json数组字符串（只能校验非空）
     private String validateParams;
     private Integer state;

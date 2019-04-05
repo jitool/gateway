@@ -1,6 +1,7 @@
 package com.executor.gateway.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.executor.gateway.config.properties.RouteProperties;
 import com.executor.gateway.core.ApiConfigManager;
 import com.executor.gateway.core.constant.GatewayAttrTypeEnum;
 import com.executor.gateway.core.constant.RESPONSE;
@@ -13,9 +14,11 @@ import com.executor.gateway.model.po.GatewayAttrConfig;
 import com.executor.gateway.model.po.GatewayConfig;
 import com.executor.gateway.service.DynamicRouteService;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
@@ -32,6 +35,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: miaoguoxin
@@ -40,7 +44,7 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class DynamicRouteServiceImpl implements DynamicRouteService{
+public class DynamicRouteServiceImpl implements DynamicRouteService {
 
     @Resource
     private RouteDefinitionWriter routeDefinitionWriter;
@@ -54,6 +58,8 @@ public class DynamicRouteServiceImpl implements DynamicRouteService{
     private ApiConfigMapper apiConfigMapper;
     @Resource
     private GatewayAttrConfigMapper gatewayAttrConfigMapper;
+    @Autowired
+    private RouteProperties routeProperties;
 
     private void notifyChanged() {
         applicationContext.publishEvent(new RefreshRoutesEvent(this));
@@ -81,7 +87,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService{
         }
     }
 
-    private void loadRouteDefinition(GatewayConfig gatewayConfig) {
+    private RouteDefinition loadRouteDefinition(GatewayConfig gatewayConfig) {
         RouteDefinition definition = new RouteDefinition();
         definition.setId(gatewayConfig.getServiceId());
         try {
@@ -99,6 +105,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService{
         //设置predicate和filter
         this.setPredicatesAndFilters(gatewayConfig, definition);
         routeDefinitionWriter.save(Mono.just(definition)).subscribe();
+        return definition;
     }
 
 
@@ -145,7 +152,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService{
 
     @Override
     public Integer updateRoute(GatewayConfig gatewayConfig) {
-        if (gatewayConfig ==null){
+        if (gatewayConfig == null) {
             return RESPONSE.ERROR;
         }
         this.loadRouteDefinition(gatewayConfig);
@@ -168,9 +175,10 @@ public class DynamicRouteServiceImpl implements DynamicRouteService{
             return RESPONSE.ERROR;
         }
         //开始装载spring cloud gateway 路由
-        for (GatewayConfig gatewayConfig : gatewayConfigList) {
-            this.loadRouteDefinition(gatewayConfig);
-        }
+        List<RouteDefinition> routeDefinitions = gatewayConfigList.stream().map(this::loadRouteDefinition).collect(Collectors.toList());
+        routeProperties.setRoutes(routeDefinitions);
+        //通知刷新
+        this.notifyChanged();
         return RESPONSE.SUCCESS;
     }
 

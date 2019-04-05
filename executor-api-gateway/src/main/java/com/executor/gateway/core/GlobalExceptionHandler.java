@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * @Auther: miaoguoxin
  * @Date: 2018/12/12 21:55
- * @Description:
+ * @Description: 处理网关本身抛出的异常
  */
 @Slf4j
 public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         ServerHttpRequest request = exchange.getRequest();
         Map<String, Object> result = this.getHttpResult(httpStatus);
         //TODO 异常信息入库
-        log.error("[全局异常处理]异常请求路径:{},记录异常信息:{}", request.getPath(), ex);
+        log.error("[全局异常处理]异常请求路径:{},记录异常信息:{}", request.getPath(), ex.getMessage());
         //参考AbstractErrorWebExceptionHandler
         if (exchange.getResponse().isCommitted()) {
             return Mono.error(ex);
@@ -113,7 +113,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
     private Map<String, Object> getHttpResult(HttpStatus httpStatus) {
         ApiResult<String> apiResult=new ApiResult<>();
         apiResult.setCode(RESPONSE.ERROR);
-        apiResult.setMessage("出了点小问题，但是问题不大");
+        apiResult.setMessage(httpStatus.toString());
         Map<String,Object> result=new HashMap<>();
         result.put("httpStatus",httpStatus);
         result.put("body", JSON.toJSONString(apiResult));

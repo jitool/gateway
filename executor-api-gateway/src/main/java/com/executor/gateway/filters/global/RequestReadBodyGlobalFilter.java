@@ -38,8 +38,7 @@ public class RequestReadBodyGlobalFilter implements GlobalFilter, Ordered {
         HttpHeaders headers = request.getHeaders();
         String contentType = headers.getFirst("Content-Type");
         if (Strings.isNullOrEmpty(contentType)) {
-            response.setStatusCode(HttpStatus.BAD_REQUEST);
-            return response.setComplete();
+            return chain.filter(exchange);
         }
         //上传文件直接通过
         if (contentType.startsWith(MediaType.MULTIPART_FORM_DATA_VALUE)) {

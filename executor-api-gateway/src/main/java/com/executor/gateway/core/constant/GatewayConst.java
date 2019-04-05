@@ -14,4 +14,8 @@ public class GatewayConst {
      * 缓存Api配置key
      */
     public static final String CACHE_API_OBJECT_KEY = "cachedApiConfigObject";
+    /**
+     * swagger的uri
+     */
+    public static final String SWAGGER_API_DOC_URI="/v2/api-docs";
 }
