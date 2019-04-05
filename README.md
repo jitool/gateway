@@ -28,4 +28,3 @@ Api-gateway+可视化操作管理平台，使用redis topic进行gateway节点�
 2. 新建 Feat_xxx 分支
 3. 提交代码
 4. 新建 Pull Request
-![输入图片说明](https://gitee.com/uploads/images/2019/0405/220803_2957c9e8_1505497.png "屏幕截图.png")
