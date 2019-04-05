@@ -1,7 +1,0 @@
-spring:
-  boot:
-    admin:
-      client:
-        url: http://localhost:9001
-        username: admin
-        password: admin
