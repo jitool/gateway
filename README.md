@@ -14,7 +14,8 @@ Api-gateway+可视化操作管理平台，使用redis topic进行gateway节点�
 3. xxxx
 
 #### 使用说明
-
+如何进入swagger聚合界面？
+答：ip+端口号/swagger-ui.html
 1. xxxx
 2. xxxx
 3. xxxx
