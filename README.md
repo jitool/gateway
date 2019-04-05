@@ -21,7 +21,7 @@ Api-gateway+可视化操作管理平台，最初做该项目的想法是在公�
 
 #### 使用说明
 
-如何开始本项目？<br>
+一、如何开始本项目？<br>
 答：1.将下图中sql导入<br>
     ![输入图片说明](https://gitee.com/uploads/images/2019/0405/220859_aab976d9_1505497.png "屏幕截图.png")<br>
     2.配置ruoyi项目的mysql和redis<br>
@@ -31,10 +31,10 @@ Api-gateway+可视化操作管理平台，最初做该项目的想法是在公�
     4.启动ruoyi-admin和executor-api-gateway<br>
     5.输入http://localhost:8090/gateway/login进入管理界面，默认账号：admin 密码：admin<br>
 
-如何进入swagger聚合界面？<br>
+二、如何进入swagger聚合界面？<br>
 答：localhost:8081/swagger-ui.html<br>
 
-如何进行线上gateway动态配置？
+三、如何进行线上gateway动态配置?<br>
 答：在开始这个操作前，请先了解spring cloud gateway的filter和predicate运转机制，最好先看一下官方文档，如已了解清楚，请看以下操作。<br>
 ![输入图片说明](https://gitee.com/uploads/images/2019/0405/225533_18bf2b94_1505497.png "屏幕截图.png")<br>
 ![输入图片说明](https://gitee.com/uploads/images/2019/0405/225819_fe33c00a_1505497.png "屏幕截图.png")<br>
