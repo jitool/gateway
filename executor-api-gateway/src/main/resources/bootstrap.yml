@@ -19,7 +19,7 @@ spring:
           enabled: true
           lower-case-service-id: true
     zookeeper:
-      connect-string: 139.224.117.244:2181
+      connect-string: #
       discovery:
         instance-host: localhost
         instance-port: ${server.port}
