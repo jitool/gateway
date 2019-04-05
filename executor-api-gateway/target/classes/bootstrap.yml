@@ -1,0 +1,61 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 1002
+spring:
+  cloud:
+    gateway:
+      #允许跨域，否则post方法无法正确fallback
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+    zookeeper:
+      connect-string: 139.224.117.244:2181
+      discovery:
+        instance-host: localhost
+        instance-port: ${server.port}
+  application:
+    name: api-gateway
+  profiles:
+    active: secure,data
+logging:
+  file: log/gateway.log
+  path: logs
+server:
+  port: 8081
+  servlet:
+    context-path: /gateway
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+#redis的topic模式配置
+redis:
+  topic:
+    api-channel: api-config
+    route-channel: api-route
+    api-method-name: receiveApiMessage
+    route-method-name: receiveRouteMessage
+#executor-service:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+#eureka:
+#  client:
+#   service-url:
+#     defaultZone: http://localhost:9999/eureka/
+#       instance:
+#         prefer-ip-address: true
+
+

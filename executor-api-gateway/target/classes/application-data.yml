@@ -1,0 +1,15 @@
+spring:
+  redis:
+    database: 0
+    host: 114.115.156.158
+    port: 6381
+    password: mgx**RedMaster
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://106.12.14.187:3306/gateway?useUnicode=true&useSSL=false&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&allowMultiQueries=true
+      username: mysqlroot
+      password: mgx159357
+mybatis:
+    mapper-locations: classpath:/mapper/*.xml
+    type-aliases-package: com.immouo.gateway.entity.po
+

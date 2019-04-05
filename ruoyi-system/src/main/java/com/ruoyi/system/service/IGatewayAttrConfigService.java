@@ -42,6 +42,13 @@ public interface IGatewayAttrConfigService
      * @return 结果
      */
 	public int updateGatewayAttrConfig(GatewayAttrConfig gatewayAttrConfig);
+
+	/**
+	 * route attr状态切换
+	 * @param gatewayAttrConfig
+	 * @return
+	 */
+	int changeState(GatewayAttrConfig gatewayAttrConfig);
 		
 	/**
      * 删除网关属性配置（predicate,filter配置）信息

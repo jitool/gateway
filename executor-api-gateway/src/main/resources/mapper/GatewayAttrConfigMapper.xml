@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.executor.gateway.mapper.GatewayAttrConfigMapper">
+    <resultMap id="baseMap" type="com.executor.gateway.model.po.GatewayAttrConfig">
+        <id property="id" column="id"/>
+        <result property="serviceId" column="service_id"/>
+        <result property="type" column="type" />
+        <result property="attrName" column="attr_name"/>
+        <result property="attrArgs" column="attr_args"/>
+        <result property="desc" column="desc"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="state" column="state"/>
+    </resultMap>
+    <select id="queryAllByServiceId" resultMap="baseMap">
+        SELECT
+        service_id,type,attr_name,attr_args,`desc`
+        FROM
+             t_gateway_attr_config
+        WHERE
+              service_id=#{serviceId}
+        AND state=1
+        ORDER BY sort ASC
+    </select>
+
+</mapper>

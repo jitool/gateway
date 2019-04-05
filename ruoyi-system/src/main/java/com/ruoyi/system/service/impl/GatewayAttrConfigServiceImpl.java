@@ -82,6 +82,11 @@ public class GatewayAttrConfigServiceImpl extends AbstractGatewayConfigService i
         return resultCode;
     }
 
+    @Override
+    public int changeState(GatewayAttrConfig gatewayAttrConfig) {
+        return this.updateGatewayAttrConfig(gatewayAttrConfig);
+    }
+
     /**
      * 删除网关属性配置（predicate,filter配置）对象
      *

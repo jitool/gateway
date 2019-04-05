@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.executor.gateway.mapper.ApiConfigMapper">
+    <resultMap id="BaseResultMap" type="com.executor.gateway.model.po.ApiConfig">
+        <id property="id" column="id"/>
+        <result property="serviceId" column="service_id"/>
+        <result property="title" column="title"/>
+        <result property="desc" column="desc"/>
+        <result property="environmentType" column="environment"/>
+        <result property="authType" column="auth_type"/>
+        <result property="patternUrl" column="pattern_url"/>
+        <result property="replenishRate" column="replenish_rate"/>
+        <result property="burstCapacity" column="burst_capacity"/>
+        <result property="validateParams" column="validate_params"/>
+        <result property="extra" column="extra"/>
+        <result property="state" column="state"/>
+    </resultMap>
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT id,
+               service_id,
+               environment,
+               title,
+               `desc`,
+               auth_type,
+               pattern_url,
+               replenish_rate,
+               burst_capacity,
+               validate_params,
+               extra,
+               state
+        FROM t_api_config
+        WHERE
+        state=1
+    </select>
+</mapper>

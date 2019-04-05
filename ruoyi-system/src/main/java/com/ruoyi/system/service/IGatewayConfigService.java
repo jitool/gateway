@@ -50,6 +50,13 @@ public interface IGatewayConfigService
      * @return 结果
      */
 	public int deleteGatewayConfigByIds(String ids);
+
+	/**
+	 * 切换状态
+	 * @param gatewayConfig
+	 * @return
+	 */
+	int changeState(GatewayConfig gatewayConfig);
 	/**
 	 *
 	 * 功能描述:通知刷新节点路由配置
