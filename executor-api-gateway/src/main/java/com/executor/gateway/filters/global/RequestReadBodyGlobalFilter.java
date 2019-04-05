@@ -1,8 +1,7 @@
 package com.executor.gateway.filters.global;
 
-import com.executor.gateway.core.ValidateParamsFactory;
+import com.executor.gateway.core.validate.ValidateParamsFactory;
 import com.executor.gateway.model.bo.ApiConfigBo;
-import com.executor.gateway.model.po.ApiConfig;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

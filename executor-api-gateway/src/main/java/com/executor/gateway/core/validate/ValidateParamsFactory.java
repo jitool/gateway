@@ -1,4 +1,4 @@
-package com.executor.gateway.core;
+package com.executor.gateway.core.validate;
 
 import com.alibaba.fastjson.JSON;
 import com.executor.gateway.core.util.SpringBeanUtils;
