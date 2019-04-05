@@ -14,12 +14,10 @@ Api-gateway+可视化操作管理平台，使用redis topic进行gateway节点�
 3. xxxx
 
 #### 使用说明
-如何开始本项目？
+1. 如何开始本项目？
 答：![输入图片说明](https://gitee.com/uploads/images/2019/0405/220859_aab976d9_1505497.png "屏幕截图.png")将图中sql导入
-如何进入swagger聚合界面？
+2. 如何进入swagger聚合界面？
 答：ip+端口号/swagger-ui.html
-1. xxxx
-2. xxxx
 3. xxxx
 
 #### 参与贡献
@@ -27,4 +25,4 @@ Api-gateway+可视化操作管理平台，使用redis topic进行gateway节点�
 1. Fork 本仓库
 2. 新建 Feat_xxx 分支
 3. 提交代码
-4. 新建 Pull Request
+4. 新建 Pull Request1. 
