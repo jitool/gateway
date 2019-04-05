@@ -27,7 +27,7 @@ Api-gateway+可视化操作管理平台，最初做该项目的想法是在公�
     4.启动ruoyi-admin和executor-api-gateway<br>
     5.输入http://localhost:8090/gateway/login进入管理界面，默认账号：admin 密码：admin<br>
  如何进入swagger聚合界面？<br>
-答：ip+端口号/swagger-ui.html<br>
+答：localhost:8081/swagger-ui.html<br>
 
 
 #### 参与贡献
