@@ -2,7 +2,6 @@ package com.ruoyi.web.controller.config;
 
 import java.util.List;
 
-import com.ruoyi.system.domain.ApiConfig;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

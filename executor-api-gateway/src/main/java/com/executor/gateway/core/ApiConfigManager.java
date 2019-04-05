@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Auther: miaoguoxin
@@ -21,7 +22,7 @@ public class ApiConfigManager {
     /**
      * api配置map
      */
-    private Map<String, ApiConfigBo> apiConfigMap = new HashMap<>();
+    private Map<String, ApiConfigBo> apiConfigMap = new ConcurrentHashMap<>();
 
     public void putConfig(String uri, ApiConfigBo apiConfig) {
         apiConfigMap.put(uri, apiConfig);

@@ -1,16 +1,14 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
-
-import com.ruoyi.system.domain.GatewayConfig;
-import com.ruoyi.system.mapper.GatewayConfigMapper;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.system.domain.GatewayAttrConfig;
+import com.ruoyi.system.mapper.GatewayAttrConfigMapper;
 import com.ruoyi.system.service.AbstractGatewayConfigService;
+import com.ruoyi.system.service.IGatewayAttrConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.GatewayAttrConfigMapper;
-import com.ruoyi.system.domain.GatewayAttrConfig;
-import com.ruoyi.system.service.IGatewayAttrConfigService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.util.List;
 
 /**
  * 网关属性配置（predicate,filter配置） 服务层实现
@@ -22,8 +20,6 @@ import com.ruoyi.common.core.text.Convert;
 public class GatewayAttrConfigServiceImpl extends AbstractGatewayConfigService implements IGatewayAttrConfigService {
     @Autowired
     private GatewayAttrConfigMapper gatewayAttrConfigMapper;
-    @Autowired
-    private GatewayConfigMapper gatewayConfigMapper;
 
     /**
      * 查询网关属性配置（predicate,filter配置）信息
@@ -57,9 +53,7 @@ public class GatewayAttrConfigServiceImpl extends AbstractGatewayConfigService i
     public int insertGatewayAttrConfig(GatewayAttrConfig gatewayAttrConfig) {
         int resultCode = gatewayAttrConfigMapper.insertGatewayAttrConfig(gatewayAttrConfig);
         if (resultCode > 0) {
-            //已经添加了路由配置才发送通知
-            GatewayConfig gatewayConfig = gatewayConfigMapper.selectGatewayConfigById(gatewayAttrConfig.getServiceId());
-            super.sendRouteUpdateNotify(gatewayConfig);
+            super.sendRefreshAllRouteNotify();
         }
         return resultCode;
     }
@@ -75,9 +69,7 @@ public class GatewayAttrConfigServiceImpl extends AbstractGatewayConfigService i
     public int updateGatewayAttrConfig(GatewayAttrConfig gatewayAttrConfig) {
         int resultCode = gatewayAttrConfigMapper.updateGatewayAttrConfig(gatewayAttrConfig);
         if (resultCode > 0) {
-            //已经添加了路由配置才发送通知
-            GatewayConfig gatewayConfig = gatewayConfigMapper.selectGatewayConfigById(gatewayAttrConfig.getServiceId());
-            super.sendRouteUpdateNotify(gatewayConfig);
+            super.sendRefreshAllRouteNotify();
         }
         return resultCode;
     }
@@ -98,13 +90,7 @@ public class GatewayAttrConfigServiceImpl extends AbstractGatewayConfigService i
         String[] idsArr = Convert.toStrArray(ids);
         int resultCode = gatewayAttrConfigMapper.deleteGatewayAttrConfigByIds(idsArr);
         if (resultCode > 0) {
-            for (String id : idsArr) {
-                GatewayAttrConfig gatewayAttrConfig = gatewayAttrConfigMapper.selectGatewayAttrConfigById(Integer.parseInt(id));
-                if (gatewayAttrConfig != null) {
-                    GatewayConfig gatewayConfig = gatewayConfigMapper.selectGatewayConfigById(gatewayAttrConfig.getServiceId());
-                    super.sendRouteUpdateNotify(gatewayConfig);
-                }
-            }
+            super.sendRefreshAllRouteNotify();
         }
         return resultCode;
     }

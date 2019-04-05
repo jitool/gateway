@@ -55,8 +55,6 @@ public class DynamicRouteServiceImpl implements DynamicRouteService, Application
     private ApiConfigMapper apiConfigMapper;
     @Resource
     private GatewayAttrConfigMapper gatewayAttrConfigMapper;
-    @Autowired
-    private StringRedisTemplate redisTemplate;
 
     private void notifyChanged() {
         this.publisher.publishEvent(new RefreshRoutesEvent(this));

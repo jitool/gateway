@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import com.ruoyi.common.config.RedisTopicChannelProperties;
 import com.ruoyi.common.enums.TopicNotifyEventType;
 import com.ruoyi.common.json.JSONObject;
+import com.ruoyi.system.listener.GatewayRefreshEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.ApiConfigMapper;
@@ -27,10 +29,9 @@ public class ApiConfigServiceImpl implements IApiConfigService {
     private ApiConfigMapper apiConfigMapper;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
-
-    @Autowired
     private RedisTopicChannelProperties redisTopicChannelProperties;
+    @Autowired
+    private ApplicationContext applicationContext;
 
 
     /**
@@ -65,7 +66,7 @@ public class ApiConfigServiceImpl implements IApiConfigService {
     public int insertApiConfig(ApiConfig apiConfig) {
         int resultCode = apiConfigMapper.insertApiConfig(apiConfig);
         if (resultCode>0){
-            this.handleInsertOrUpdateSend(apiConfig.getPatternUrl(),apiConfig);
+            applicationContext.publishEvent(new GatewayRefreshEvent(this,redisTopicChannelProperties.getApiChannel()));
         }
         return resultCode;
     }
@@ -80,13 +81,9 @@ public class ApiConfigServiceImpl implements IApiConfigService {
      */
     @Override
     public int updateApiConfig(ApiConfig apiConfig) {
-        ApiConfig selectApiConfig = apiConfigMapper.selectApiConfigById(apiConfig.getId());
-        if (selectApiConfig == null) {
-            return 0;
-        }
         int resultCode = apiConfigMapper.updateApiConfig(apiConfig);
         if (resultCode>0){
-            this.handleInsertOrUpdateSend(selectApiConfig.getPatternUrl(),apiConfig);
+            applicationContext.publishEvent(new GatewayRefreshEvent(this,redisTopicChannelProperties.getApiChannel()));
         }
         return resultCode;
     }
@@ -101,21 +98,14 @@ public class ApiConfigServiceImpl implements IApiConfigService {
     public int deleteApiConfigByIds(String ids) {
         int resultCode = apiConfigMapper.deleteApiConfigByIds(Convert.toStrArray(ids));
         if (resultCode>0){
-            List<ApiConfig> apiConfigs = apiConfigMapper.selectInIds(Convert.toStrArray(ids));
-            List<String> urls = apiConfigs.stream().map(ApiConfig::getPatternUrl).collect(Collectors.toList());
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("type",TopicNotifyEventType.DEL.getValue());
-            jsonObject.put("patternUrl", urls);
-            redisTemplate.convertAndSend(redisTopicChannelProperties.getApiChannel(),jsonObject.toString());
+            applicationContext.publishEvent(new GatewayRefreshEvent(this,redisTopicChannelProperties.getApiChannel()));
         }
         return resultCode;
     }
 
     @Override
     public int refreshAllApiConfig() {
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("type",TopicNotifyEventType.REFRESH.getValue());
-        redisTemplate.convertAndSend(redisTopicChannelProperties.getApiChannel(),jsonObject.toString());
+        applicationContext.publishEvent(new GatewayRefreshEvent(this,redisTopicChannelProperties.getApiChannel()));
         return 1;
     }
 
@@ -124,11 +114,4 @@ public class ApiConfigServiceImpl implements IApiConfigService {
         return this.updateApiConfig(apiConfig);
     }
 
-    private void handleInsertOrUpdateSend(String patternUrl,ApiConfig apiConfig) {
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("type", TopicNotifyEventType.UPDATE.getValue());
-        jsonObject.put("patternUrl", Collections.singletonList(patternUrl));
-        jsonObject.put("apiConfig",apiConfig);
-        redisTemplate.convertAndSend(redisTopicChannelProperties.getApiChannel(),jsonObject.toString());
-    }
 }

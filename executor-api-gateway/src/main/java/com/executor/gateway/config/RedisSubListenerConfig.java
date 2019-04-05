@@ -1,15 +1,12 @@
 package com.executor.gateway.config;
 
 import com.executor.gateway.config.properties.RedisTopicProperties;
-import com.executor.gateway.core.MessageReceiver;
-import com.executor.gateway.core.constant.RedisConst;
+import com.executor.gateway.core.RedisTopicMessageReceiver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
@@ -52,12 +49,12 @@ public class RedisSubListenerConfig {
      * @return
      */
     @Bean
-    MessageListenerAdapter listenerAdapter(MessageReceiver receiver) {
+    MessageListenerAdapter listenerAdapter(RedisTopicMessageReceiver receiver) {
         return new MessageListenerAdapter(receiver, redisTopicProperties.getRouteMethodName());
     }
 
     @Bean
-    MessageListenerAdapter listenerAdapter2(MessageReceiver receiver) {
+    MessageListenerAdapter listenerAdapter2(RedisTopicMessageReceiver receiver) {
         return new MessageListenerAdapter(receiver, redisTopicProperties.getApiMethodName());
     }
 

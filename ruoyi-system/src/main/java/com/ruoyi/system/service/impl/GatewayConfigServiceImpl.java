@@ -49,7 +49,7 @@ public class GatewayConfigServiceImpl extends AbstractGatewayConfigService imple
     public int insertGatewayConfig(GatewayConfig gatewayConfig) {
         int result = gatewayConfigMapper.insertGatewayConfig(gatewayConfig);
         if (result > 0) {
-            super.sendRouteUpdateNotify(gatewayConfig);
+            this.refreshRoute();
         }
         return result;
     }
@@ -64,7 +64,7 @@ public class GatewayConfigServiceImpl extends AbstractGatewayConfigService imple
     public int updateGatewayConfig(GatewayConfig gatewayConfig) {
         int resultCode = gatewayConfigMapper.updateGatewayConfig(gatewayConfig);
         if (resultCode>0){
-            super.sendRouteUpdateNotify(gatewayConfig);
+            this.refreshRoute();
         }
         return resultCode;
     }
@@ -81,7 +81,7 @@ public class GatewayConfigServiceImpl extends AbstractGatewayConfigService imple
         String[] idArr = Convert.toStrArray(ids);
         int resultCode = gatewayConfigMapper.deleteGatewayConfigByIds(idArr);
         if (resultCode>0){
-           super.sendRouteDelNontify(idArr);
+           this.refreshRoute();
         }
         return resultCode;
     }
