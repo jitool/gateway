@@ -20,7 +20,12 @@ Api-gateway+可视化操作管理平台，最初做该项目的想法是在公�
 #### 使用说明
  如何开始本项目？<br>
 答：1.![输入图片说明](https://gitee.com/uploads/images/2019/0405/220859_aab976d9_1505497.png "屏幕截图.png")将图中sql导入<br>
-    2.
+    2.配置ruoyi项目的mysql和redis<br>
+    ![输入图片说明](https://gitee.com/uploads/images/2019/0405/224453_a862b3bc_1505497.png "屏幕截图.png")<br>
+    3.配置gateway项目mysql、redis和zookeeper地址<br>
+    ![输入图片说明](https://gitee.com/uploads/images/2019/0405/224755_4385ec01_1505497.png "屏幕截图.png")<br>
+    4.启动ruoyi-admin和executor-api-gateway<br>
+    5.输入http://localhost:8090/gateway/login进入管理界面，默认账号：admin 密码：admin<br>
  如何进入swagger聚合界面？<br>
 答：ip+端口号/swagger-ui.html<br>
 
