@@ -67,7 +67,7 @@ public class ResponseReadBodyGlobalFilter implements GlobalFilter, Ordered {
             Mono<String> bodyMono = clientResponseAdapter.bodyToMono(String.class);
             return bodyMono.flatMap(respBody -> {
                 //打印返回响应日志
-                log.debug("[Trace:{}]-gateway response:ct=[{}], status=[{}],headers=[{}],body=[{}]",
+                log.info("[Trace:{}]-gateway response:ct=[{}], status=[{}],headers=[{}],body=[{}]",
                         trace, System.currentTimeMillis() - startTime, resp.getStatusCode(), resp.getHeaders(), respBody);
                 String errRespString = getErrRespString(resp.getStatusCode());
                 if (!Strings.isNullOrEmpty(errRespString)) {
@@ -92,9 +92,6 @@ public class ResponseReadBodyGlobalFilter implements GlobalFilter, Ordered {
             respStr = JSON.toJSONString(apiResult);
         } else if (httpStatus == HttpStatus.NOT_FOUND) {
             ApiResult apiResult = new ApiResult(RESPONSE.ERROR, "糟糕，api走丢了~~~");
-            respStr = JSON.toJSONString(apiResult);
-        }else if(httpStatus!=HttpStatus.OK){
-            ApiResult apiResult = new ApiResult(RESPONSE.ERROR, "请稍后重试");
             respStr = JSON.toJSONString(apiResult);
         }
         return respStr;
