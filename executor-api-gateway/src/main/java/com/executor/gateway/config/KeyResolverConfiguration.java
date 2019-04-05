@@ -23,7 +23,10 @@ import java.util.Objects;
 @Configuration
 public class KeyResolverConfiguration {
 
-
+    /**
+     * api限流
+     * @return
+     */
     @Bean("apiUriKeyResolver")
     public KeyResolver apiUriKeyResolver() {
         return exchange -> {

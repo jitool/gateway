@@ -71,8 +71,6 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
         this.refreshAllRoute();
         //刷新内存的api配置
         this.refreshApi();
-        //通知刷新
-        this.notifyChanged();
         log.info("路由资源加载完毕");
     }
 
