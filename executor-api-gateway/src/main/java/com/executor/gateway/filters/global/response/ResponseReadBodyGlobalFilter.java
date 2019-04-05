@@ -67,7 +67,7 @@ public class ResponseReadBodyGlobalFilter implements GlobalFilter, Ordered {
             Mono<String> bodyMono = clientResponseAdapter.bodyToMono(String.class);
             return bodyMono.flatMap(respBody -> {
                 //打印返回响应日志
-                log.info("[Trace:{}]-gateway response:ct=[{}], status=[{}],headers=[{}],body=[{}]",
+                log.debug("[Trace:{}]-gateway response:ct=[{}], status=[{}],headers=[{}],body=[{}]",
                         trace, System.currentTimeMillis() - startTime, resp.getStatusCode(), resp.getHeaders(), respBody);
                 String errRespString = getErrRespString(resp.getStatusCode());
                 if (!Strings.isNullOrEmpty(errRespString)) {
