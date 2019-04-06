@@ -1,7 +1,10 @@
 package com.executor.gateway.core.rule;
 
+import com.executor.gateway.core.rule.meta.BaseDiscoveryMetaInft;
+import com.executor.gateway.core.rule.meta.ZookeeperMetaImpl;
 import com.executor.gateway.core.rule.support.RibbonFilterContext;
 import com.executor.gateway.core.rule.support.RibbonFilterContextHolder;
+import com.executor.gateway.core.util.SpringBeanUtils;
 import com.netflix.loadbalancer.AbstractServerPredicate;
 import com.netflix.loadbalancer.PredicateKey;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +26,12 @@ public class GrayMetadataPredicate extends AbstractServerPredicate {
     @Override
     public boolean apply(@Nullable PredicateKey predicateKey) {
         final RibbonFilterContext context = RibbonFilterContextHolder.getCurrentContext();
-        ZookeeperServer server = (ZookeeperServer) predicateKey.getServer();
-        final Map<String, String> metadata = server.getInstance().getPayload().getMetadata();
+        BaseDiscoveryMetaInft discoveryMetaInft = SpringBeanUtils.getBean(BaseDiscoveryMetaInft.class);
         //如果没有设置属性，那么走轮询
         if (context.getAttributes().isEmpty()){
             return true;
         }
+        final Map<String, String> metadata = discoveryMetaInft.getMetaInfo(predicateKey.getServer());
         final Set<Map.Entry<String, String>> attributes = Collections.unmodifiableSet(context.getAttributes().entrySet());
         return metadata.entrySet().containsAll(attributes);
     }

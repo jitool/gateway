@@ -3,6 +3,7 @@ package com.executor.gateway.filters.global.response;
 import com.alibaba.fastjson.JSON;
 import com.executor.gateway.core.ApiResult;
 import com.executor.gateway.core.constant.RESPONSE;
+import com.executor.gateway.core.rule.support.RibbonFilterContext;
 import com.executor.gateway.core.rule.support.RibbonFilterContextHolder;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
@@ -56,8 +57,6 @@ public class ResponseReadBodyGlobalFilter implements GlobalFilter, Ordered {
      */
     private BodyHandlerServerHttpResponseDecorator.BodyHandlerFunction initBodyHandler(ServerWebExchange exchange, long startTime) {
         return (resp, body) -> {
-            //清理线程钩子
-            RibbonFilterContextHolder.clearCurrentContext();
             //拦截
             String trace = exchange.getRequest().getHeaders().getFirst("trace");
             MediaType originalResponseContentType = exchange.getAttribute(ORIGINAL_RESPONSE_CONTENT_TYPE_ATTR);

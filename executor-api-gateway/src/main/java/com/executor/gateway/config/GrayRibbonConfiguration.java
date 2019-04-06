@@ -1,6 +1,8 @@
 package com.executor.gateway.config;
 
 import com.executor.gateway.core.rule.GrayMetadataBalanceRule;
+import com.executor.gateway.core.rule.meta.BaseDiscoveryMetaInft;
+import com.executor.gateway.core.rule.meta.ZookeeperMetaImpl;
 import com.netflix.loadbalancer.IRule;
 import com.netflix.loadbalancer.RandomRule;
 import org.apache.ibatis.annotations.Param;
@@ -10,6 +12,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
 /**
@@ -26,5 +29,15 @@ public class GrayRibbonConfiguration {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public IRule metadataAwareRule() {
         return new GrayMetadataBalanceRule();
+    }
+
+    /**
+     * 获取metaInfo策略
+     * @return
+     */
+    @Bean
+    @Primary
+    BaseDiscoveryMetaInft discoveryMetaInft(){
+        return new ZookeeperMetaImpl();
     }
 }

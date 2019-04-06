@@ -10,6 +10,7 @@ import com.netflix.loadbalancer.*;
 public class GrayMetadataBalanceRule extends PredicateBasedRule{
     private  CompositePredicate predicate;
 
+
     public GrayMetadataBalanceRule() {
         super();
         predicate = createCompositePredicate(new GrayMetadataPredicate(), new AvailabilityPredicate(this,null));
